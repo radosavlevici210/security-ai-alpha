@@ -352,6 +352,3 @@ args = "httpd.serve_forever()"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "\""
-
-[[ports]]
-localPort = 5000
