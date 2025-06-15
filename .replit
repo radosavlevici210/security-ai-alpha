@@ -275,12 +275,86 @@ args = "echo \"✅ Production-ready AI content creation studio!\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python3 -c \"import http.server; import socketserver; import os; class UnrestrictedHandler(http.server.SimpleHTTPRequestHandler): pass; os.chdir('.'); httpd = socketserver.TCPServer(('0.0.0.0', 5000), UnrestrictedHandler); print('🌐 Professional AI Studio serving at http://0.0.0.0:5000'); print('🎬 All features visible and unrestricted!'); print('💎 Production environment active - No limitations!'); httpd.serve_forever()\""
+args = "python3 -c \""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "import http.server"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "import socketserver"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "import os"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "class UnrestrictedHandler(http.server.SimpleHTTPRequestHandler):"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "    def end_headers(self):"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "        self.send_header('Cache-Control', 'no-cache')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "        self.send_header('Access-Control-Allow-Origin', '*')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "        self.send_header('Access-Control-Allow-Headers', 'Content-Type')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "        super().end_headers()"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "os.chdir('.')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "httpd = socketserver.TCPServer(('0.0.0.0', 5000), UnrestrictedHandler)"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "print('🌐 Professional AI Studio serving at http://0.0.0.0:5000')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "print('🎬 All features visible and unrestricted!')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "print('💎 Production environment active - No limitations!')"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "httpd.serve_forever()"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "\""
 
 [[ports]]
-localPort = 3000
-externalPort = 80
+localPort = 32795
 
 [[ports]]
-localPort = 5000
-externalPort = 3000
+localPort = 42727

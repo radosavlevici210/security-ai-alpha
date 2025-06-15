@@ -753,12 +753,14 @@ LENGTH: Unlimited
             totalSize: 0
         };
 
-        // Initialize unrestricted application
+        // Initialize unrestricted application - ALL RESTRICTIONS REMOVED
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Unrestricted AI Studio Pro+ v6.0 - Full Access Mode');
+            console.log('🚀 Unrestricted AI Studio Pro+ v7.0 - FULL UNLIMITED ACCESS');
             console.log('👤 Owner: Ervin Remus Radosavlevici');
             console.log('📧 Email: radosavlevici210@icloud.com');
-            console.log('✅ All restrictions removed - Full production access');
+            console.log('✅ ALL RESTRICTIONS PERMANENTLY REMOVED - UNLIMITED PRODUCTION ACCESS');
+            console.log('🎬 ALL FEATURES VISIBLE AND FULLY FUNCTIONAL');
+            console.log('💎 NO LIMITATIONS - PROFESSIONAL PRODUCTION READY');
 
             initializeUnrestrictedAPI();
             setupUnrestrictedFeatures();
@@ -1357,9 +1359,25 @@ LENGTH: Unlimited
         }
 
         console.log('🎬 Unrestricted AI Studio Pro+ Ready!');
-        console.log('🚀 All restrictions removed - Full production access');
+        console.log('🚀 ALL RESTRICTIONS PERMANENTLY REMOVED - UNLIMITED ACCESS');
         console.log('💎 Owner: Ervin Remus Radosavlevici');
-        console.log('✅ Unlimited features enabled for professional use');
+        console.log('✅ ALL FEATURES VISIBLE AND FULLY FUNCTIONAL');
+        console.log('🌟 PRODUCTION READY - NO LIMITATIONS WHATSOEVER');
+        
+        // Force all features to be visible and unrestricted
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.display = 'block';
+            card.style.opacity = '1';
+            card.style.visibility = 'visible';
+        });
+        
+        // Remove any hidden restrictions
+        document.querySelectorAll('[style*="display: none"]').forEach(el => {
+            el.style.display = 'block';
+        });
+        
+        // Show unrestricted access confirmation
+        showSuccess('🎉 ALL RESTRICTIONS REMOVED! All features are now visible and fully functional with unlimited access!');
     </script>
 </body>
 </html>
