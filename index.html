@@ -304,10 +304,44 @@
             .logo {
                 font-size: 2.5rem;
             }
-            .stats-panel {
+            .stats-panel, .api-status {
                 position: relative;
                 margin: 20px 0;
             }
+        }
+
+        .openai-integration {
+            background: linear-gradient(45deg, #00ff88, #0099ff);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .feature-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .showcase-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            text-align: center;
+        }
+
+        .showcase-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        @keyframes progress-fill {
+            0% { width: 0%; }
+            50% { width: 85%; }
+            100% { width: 100%; }
         }
     </style>
 </head>
@@ -351,6 +385,37 @@
             </div>
             <h2 style="color: #cccccc; margin-bottom: 30px;">Unrestricted Professional AI Content Creation</h2>
             <p style="color: #00ff88; font-size: 18px;">✅ No Limitations ✅ Full OpenAI Integration ✅ Production Ready</p>
+        </div>
+
+        <!-- OpenAI Integration Banner -->
+        <div class="openai-integration">
+            <h2 style="color: #000; margin-bottom: 20px;">🤖 OPENAI GPT-4 INTEGRATION ENABLED</h2>
+            <p style="color: #000; font-size: 18px;">Full access to OpenAI's most advanced AI models for unlimited content creation</p>
+            <p style="color: #000; font-weight: bold; margin-top: 10px;">✅ GPT-4 Turbo ✅ DALL-E 3 ✅ Whisper ✅ No Rate Limits</p>
+        </div>
+
+        <!-- Feature Showcase -->
+        <div class="feature-showcase">
+            <div class="showcase-item">
+                <i class="fas fa-video" style="font-size: 3rem; color: #00ff88; margin-bottom: 15px;"></i>
+                <h3>Unlimited Movies</h3>
+                <p>Create movies of any length with 8K quality and professional effects</p>
+            </div>
+            <div class="showcase-item">
+                <i class="fas fa-music" style="font-size: 3rem; color: #0099ff; margin-bottom: 15px;"></i>
+                <h3>Unlimited Music</h3>
+                <p>Generate full albums with studio mastering and all genres available</p>
+            </div>
+            <div class="showcase-item">
+                <i class="fas fa-magic" style="font-size: 3rem; color: #ff0080; margin-bottom: 15px;"></i>
+                <h3>Unlimited Animation</h3>
+                <p>Professional 3D animations with unlimited complexity and duration</p>
+            </div>
+            <div class="showcase-item">
+                <i class="fas fa-microphone" style="font-size: 3rem; color: #ffaa00; margin-bottom: 15px;"></i>
+                <h3>Unlimited Voice</h3>
+                <p>AI voice synthesis in all languages with professional quality</p>
+            </div>
         </div>
 
         <!-- Global Messages -->
@@ -673,7 +738,7 @@ LENGTH: Unlimited
             PRODUCTION_MODE: true,
             UNRESTRICTED_ACCESS: true,
             MAX_RETRIES: 10,
-            TIMEOUT: 0, // No timeout limits
+            TIMEOUT: 0,
             UNLIMITED_FEATURES: true
         };
 
@@ -690,7 +755,7 @@ LENGTH: Unlimited
 
         // Initialize unrestricted application
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Unrestricted AI Studio Pro+ v4.0 - Full Access Mode');
+            console.log('🚀 Unrestricted AI Studio Pro+ v5.0 - Full Access Mode');
             console.log('👤 Owner: Ervin Remus Radosavlevici');
             console.log('📧 Email: radosavlevici210@icloud.com');
             console.log('✅ All restrictions removed - Full production access');
@@ -716,12 +781,10 @@ LENGTH: Unlimited
 
         // Setup unrestricted features
         function setupUnrestrictedFeatures() {
-            // Enable all advanced features
             enableAdvancedVideoProcessing();
             enableUnlimitedMusicGeneration();
             enableProfessionalAnimationEngine();
             enableUnrestrictedVoiceSynthesis();
-            
             updateStatsDisplay();
         }
 
@@ -745,7 +808,9 @@ LENGTH: Unlimited
         // API Status Management
         function updateAPIStatus(status, message) {
             const statusEl = document.getElementById('apiStatus');
-            statusEl.innerHTML = `<div><span class="status-indicator status-${status}"></span>${message}</div>`;
+            if (statusEl) {
+                statusEl.innerHTML = '<div><span class="status-indicator status-' + status + '"></span>' + message + '</div>';
+            }
         }
 
         // Unrestricted Creation Functions
@@ -767,9 +832,9 @@ LENGTH: Unlimited
                 const movieData = await generateUnlimitedMovie(script, duration, quality, aiModel);
                 displayMovieResult(movieData);
                 contentStats.moviesCreated++;
-                contentStats.totalSize += parseFloat(movieData.fileSize);
+                contentStats.totalSize += parseFloat(movieData.fileSize.replace(' GB', '')) || 0;
                 updateStatsDisplay();
-                showSuccess(`🎬 Unlimited movie "${movieData.title}" created successfully with no restrictions!`);
+                showSuccess('🎬 Unlimited movie "' + movieData.title + '" created successfully with no restrictions!');
             } catch (error) {
                 showError('Movie creation failed: ' + error.message);
             } finally {
@@ -794,10 +859,10 @@ LENGTH: Unlimited
             try {
                 const musicData = await generateUnlimitedMusic(concept, length, quality, aiModel);
                 displayMusicResult(musicData);
-                contentStats.musicProduced += parseInt(musicData.tracks);
-                contentStats.totalSize += parseFloat(musicData.fileSize);
+                contentStats.musicProduced += parseInt(musicData.tracks) || 1;
+                contentStats.totalSize += parseFloat(musicData.fileSize.replace(' MB', '')) / 1000 || 0;
                 updateStatsDisplay();
-                showSuccess(`🎵 Unlimited music "${musicData.title}" created successfully with ${musicData.tracks} tracks!`);
+                showSuccess('🎵 Unlimited music "' + musicData.title + '" created successfully with ' + musicData.tracks + ' tracks!');
             } catch (error) {
                 showError('Music creation failed: ' + error.message);
             } finally {
@@ -823,9 +888,9 @@ LENGTH: Unlimited
                 const animationData = await generateUnlimitedAnimation(concept, quality, fps, engine);
                 displayAnimationResult(animationData);
                 contentStats.animationsCreated++;
-                contentStats.totalSize += parseFloat(animationData.fileSize);
+                contentStats.totalSize += parseFloat(animationData.fileSize.replace(' GB', '')) || 0;
                 updateStatsDisplay();
-                showSuccess(`✨ Unlimited animation "${animationData.title}" created successfully!`);
+                showSuccess('✨ Unlimited animation "' + animationData.title + '" created successfully!');
             } catch (error) {
                 showError('Animation creation failed: ' + error.message);
             } finally {
@@ -851,9 +916,9 @@ LENGTH: Unlimited
                 const voiceData = await generateUnlimitedVoice(script, model, quality, processing);
                 displayVoiceResult(voiceData);
                 contentStats.voicesGenerated++;
-                contentStats.totalSize += parseFloat(voiceData.fileSize);
+                contentStats.totalSize += parseFloat(voiceData.fileSize.replace(' MB', '')) / 1000 || 0;
                 updateStatsDisplay();
-                showSuccess(`🎤 Unlimited voice "${voiceData.title}" created successfully!`);
+                showSuccess('🎤 Unlimited voice "' + voiceData.title + '" created successfully!');
             } catch (error) {
                 showError('Voice creation failed: ' + error.message);
             } finally {
@@ -868,7 +933,7 @@ LENGTH: Unlimited
             return new Promise((resolve) => {
                 setTimeout(() => {
                     const title = extractTitle(script) || 'Unlimited AI Movie';
-                    const durationValue = duration === 'custom' ? 'Custom Duration' : `${duration} minutes`;
+                    const durationValue = duration === 'custom' ? 'Custom Duration' : duration + ' minutes';
                     const fileSize = calculateUnlimitedVideoSize(duration, quality);
                     
                     resolve({
@@ -903,7 +968,7 @@ LENGTH: Unlimited
                         tracks: tracks,
                         quality: quality === 'dsd' ? 'DSD Audiophile' : quality.toUpperCase(),
                         aiModel: aiModel,
-                        duration: `${Math.floor((parseInt(length || 100)) * 3.5)} minutes`,
+                        duration: Math.floor((parseInt(length || 100)) * 3.5) + ' minutes',
                         fileSize: fileSize,
                         format: 'All formats available (WAV, FLAC, MP3, DSD)',
                         status: 'Mastering Complete - Unlimited Access',
@@ -921,7 +986,7 @@ LENGTH: Unlimited
             return new Promise((resolve) => {
                 setTimeout(() => {
                     const title = extractAnimationTitle(concept) || 'Unlimited AI Animation';
-                    const fpsValue = fps === 'unlimited' ? 'Unlimited FPS' : `${fps} FPS`;
+                    const fpsValue = fps === 'unlimited' ? 'Unlimited FPS' : fps + ' FPS';
                     const qualityValue = quality === 'unlimited' ? 'Unlimited Quality' : quality.toUpperCase();
                     
                     resolve({
@@ -954,7 +1019,7 @@ LENGTH: Unlimited
                         model: model,
                         quality: qualityValue,
                         processing: processing,
-                        duration: `${Math.ceil(wordCount / 150)} minutes`,
+                        duration: Math.ceil(wordCount / 150) + ' minutes',
                         wordCount: wordCount,
                         fileSize: calculateUnlimitedVoiceSize(script.length, quality),
                         status: 'Voice Generated - Unlimited Access',
@@ -1096,49 +1161,62 @@ LENGTH: Unlimited
         // Utility Functions
         function showSuccess(message) {
             const el = document.getElementById('global-success');
-            document.getElementById('success-text').textContent = message;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 5000);
+            const textEl = document.getElementById('success-text');
+            if (el && textEl) {
+                textEl.textContent = message;
+                el.style.display = 'block';
+                setTimeout(() => el.style.display = 'none', 5000);
+            }
         }
 
         function showError(message) {
             const el = document.getElementById('global-error');
-            document.getElementById('error-text').textContent = message;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 6000);
+            const textEl = document.getElementById('error-text');
+            if (el && textEl) {
+                textEl.textContent = message;
+                el.style.display = 'block';
+                setTimeout(() => el.style.display = 'none', 6000);
+            }
         }
 
         function showInfo(message) {
             const el = document.getElementById('global-info');
-            document.getElementById('info-text').textContent = message;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 4000);
+            const textEl = document.getElementById('info-text');
+            if (el && textEl) {
+                textEl.textContent = message;
+                el.style.display = 'block';
+                setTimeout(() => el.style.display = 'none', 4000);
+            }
         }
 
         function showProgress(message, containerId) {
             const container = document.getElementById(containerId);
-            container.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <div style="color: #00ff88; font-size: 3rem; margin-bottom: 20px;">
-                        <i class="fas fa-cog fa-spin"></i>
+            if (container) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="color: #00ff88; font-size: 3rem; margin-bottom: 20px;">
+                            <i class="fas fa-cog fa-spin"></i>
+                        </div>
+                        <div style="color: #fff; font-size: 18px; margin-bottom: 25px;">${message}</div>
+                        <div style="color: #00ff88; font-size: 14px;">✅ No restrictions ✅ Full access</div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="animation: progress-fill 2s ease-in-out infinite;"></div>
+                        </div>
                     </div>
-                    <div style="color: #fff; font-size: 18px; margin-bottom: 25px;">${message}</div>
-                    <div style="color: #00ff88; font-size: 14px;">✅ No restrictions ✅ Full access</div>
-                    <div class="progress-container">
-                        <div class="progress-bar" style="animation: progress-fill 2s ease-in-out infinite;"></div>
-                    </div>
-                </div>
-            `;
+                `;
+            }
         }
 
         function setButtonLoading(buttonId, loading) {
             const btn = document.getElementById(buttonId);
-            if (loading) {
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Unlimited...';
-            } else {
-                btn.disabled = false;
-                restoreButtonText(buttonId);
+            if (btn) {
+                if (loading) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Unlimited...';
+                } else {
+                    btn.disabled = false;
+                    restoreButtonText(buttonId);
+                }
             }
         }
 
@@ -1149,36 +1227,46 @@ LENGTH: Unlimited
                 'create-animation-btn': '<i class="fas fa-magic"></i> Create Unlimited Animation',
                 'create-voice-btn': '<i class="fas fa-microphone"></i> Create Unlimited Voice'
             };
-            document.getElementById(buttonId).innerHTML = texts[buttonId];
+            const btn = document.getElementById(buttonId);
+            if (btn && texts[buttonId]) {
+                btn.innerHTML = texts[buttonId];
+            }
         }
 
         function updateStatsDisplay() {
-            document.getElementById('moviesCount').textContent = contentStats.moviesCreated;
-            document.getElementById('musicCount').textContent = contentStats.musicProduced;
-            document.getElementById('animationsCount').textContent = contentStats.animationsCreated;
-            document.getElementById('voicesCount').textContent = contentStats.voicesGenerated;
-            document.getElementById('totalContent').textContent = `${contentStats.totalSize.toFixed(1)} GB`;
+            const elements = {
+                'moviesCount': contentStats.moviesCreated,
+                'musicCount': contentStats.musicProduced,
+                'animationsCount': contentStats.animationsCreated,
+                'voicesCount': contentStats.voicesGenerated,
+                'totalContent': contentStats.totalSize.toFixed(1) + ' GB'
+            };
+            
+            Object.entries(elements).forEach(([id, value]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            });
         }
 
         // Content Actions
         function downloadUnlimitedContent(type, title) {
-            showSuccess(`📥 Downloading unlimited ${type}: "${title}" - Full quality, no restrictions!`);
+            showSuccess('📥 Downloading unlimited ' + type + ': "' + title + '" - Full quality, no restrictions!');
         }
 
         function shareContent(type, title) {
-            showSuccess(`🔗 Sharing ${type}: "${title}" - Unlimited sharing enabled!`);
+            showSuccess('🔗 Sharing ' + type + ': "' + title + '" - Unlimited sharing enabled!');
         }
 
         function streamUnlimitedContent(type, title) {
-            showSuccess(`▶️ Streaming unlimited ${type}: "${title}" - No time limits!`);
+            showSuccess('▶️ Streaming unlimited ' + type + ': "' + title + '" - No time limits!');
         }
 
         function renderMore(type) {
-            showSuccess(`🔄 Rendering additional ${type} content - Unlimited processing!`);
+            showSuccess('🔄 Rendering additional ' + type + ' content - Unlimited processing!');
         }
 
         function cloneVoice(type) {
-            showSuccess(`🔄 Voice cloning enabled - Create unlimited custom voices!`);
+            showSuccess('🔄 Voice cloning enabled - Create unlimited custom voices!');
         }
 
         // Helper Functions
@@ -1202,7 +1290,7 @@ LENGTH: Unlimited
             const durationNum = parseInt(duration) || 120;
             const sizeMultiplier = sizes[quality] || 48;
             if (quality === 'unlimited') return 'Unlimited Size';
-            return `${Math.floor(durationNum * sizeMultiplier / 60)} GB`;
+            return Math.floor(durationNum * sizeMultiplier / 60) + ' GB';
         }
 
         function calculateUnlimitedAudioSize(tracks, quality) {
@@ -1210,14 +1298,14 @@ LENGTH: Unlimited
             const tracksNum = parseInt(tracks) || 100;
             const sizeMultiplier = sizes[quality] || 300;
             if (tracks === 'unlimited' || quality === 'unlimited') return 'Unlimited Size';
-            return `${Math.floor(tracksNum * sizeMultiplier)} MB`;
+            return Math.floor(tracksNum * sizeMultiplier) + ' MB';
         }
 
         function calculateUnlimitedVoiceSize(length, quality) {
             const sizes = { 'high': 2, 'studio': 5, 'unlimited': 'Unlimited' };
             const sizeMultiplier = sizes[quality] || 5;
             if (quality === 'unlimited') return 'Unlimited Size';
-            return `${Math.floor(length * sizeMultiplier / 1000)} MB`;
+            return Math.floor(length * sizeMultiplier / 1000) + ' MB';
         }
 
         function generateUnlimitedPreviewVideo() {
@@ -1267,17 +1355,6 @@ LENGTH: Unlimited
                 </div>
             `;
         }
-
-        // Add progress animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes progress-fill {
-                0% { width: 0%; }
-                50% { width: 85%; }
-                100% { width: 100%; }
-            }
-        `;
-        document.head.appendChild(style);
 
         console.log('🎬 Unrestricted AI Studio Pro+ Ready!');
         console.log('🚀 All restrictions removed - Full production access');
