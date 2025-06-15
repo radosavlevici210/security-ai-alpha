@@ -259,11 +259,11 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"🎬 Starting Professional AI Studio Pro+ with OpenAI Integration...\""
+args = "echo \"🎬 Starting Professional AI Studio Pro+ - All Features Enabled...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"🚀 All features enabled - No restrictions!\""
+args = "echo \"🚀 No restrictions active - Full production access!\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -275,115 +275,7 @@ args = "echo \"✅ Production-ready AI content creation studio!\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python3 -c \""
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "import http.server"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "import socketserver"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "import os"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = ""
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "class UnrestrictedHandler(http.server.SimpleHTTPRequestHandler):"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "    def end_headers(self):"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('Pragma', 'no-cache')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('Expires', '0')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('Access-Control-Allow-Origin', '*')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('X-Unrestricted-Access', 'true')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        self.send_header('X-Production-Ready', 'true')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "        super().end_headers()"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = ""
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "os.chdir('.')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT = 5000"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "Handler = UnrestrictedHandler"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = ""
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "with socketserver.TCPServer(('0.0.0.0', PORT), Handler) as httpd:"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "    print(f'🌐 Professional AI Studio serving at http://0.0.0.0:{PORT}')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "    print('🎬 All features visible and unrestricted!')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "    print('🚀 OpenAI integration ready for unlimited content creation!')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "    print('💎 Production environment active - No limitations!')"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "    httpd.serve_forever()"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "\""
+args = "python3 -c \"import http.server; import socketserver; import os; class UnrestrictedHandler(http.server.SimpleHTTPRequestHandler): pass; os.chdir('.'); httpd = socketserver.TCPServer(('0.0.0.0', 5000), UnrestrictedHandler); print('🌐 Professional AI Studio serving at http://0.0.0.0:5000'); print('🎬 All features visible and unrestricted!'); print('💎 Production environment active - No limitations!'); httpd.serve_forever()\""
 
 [[ports]]
 localPort = 3000
