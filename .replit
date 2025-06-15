@@ -354,7 +354,4 @@ task = "shell.exec"
 args = "\""
 
 [[ports]]
-localPort = 32795
-
-[[ports]]
-localPort = 42727
+localPort = 5000
