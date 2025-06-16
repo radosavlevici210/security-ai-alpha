@@ -130,13 +130,7 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Development server settings
-[dev]
-  command = "node server.js"
-  port = 5000
-  targetPort = 5000
-  framework = "#auto"
-  autoLaunch = false
+# Production deployment only
 
 # Production deployment configuration
 [deployment]

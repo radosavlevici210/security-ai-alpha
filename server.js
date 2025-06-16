@@ -88,7 +88,7 @@ const server = http.createServer((req, res) => {
 function serveFile(filePath, ext, res) {
   const mimeType = mimeTypes[ext] || 'application/octet-stream';
   
-  // Production headers without CORS
+  // Production headers
   const headers = {
     'Content-Type': mimeType,
     'X-Powered-By': 'AI Studio Pro+ v10.0.0',
@@ -124,7 +124,7 @@ function serveFile(filePath, ext, res) {
 function handleAPIRequest(req, res, pathname) {
   console.log(`🔧 API Request: ${req.method} ${pathname}`);
   
-  // Set API response headers without CORS
+  // Set production API response headers
   const headers = {
     'Content-Type': 'application/json',
     'X-API-Version': '10.0.0',
@@ -297,7 +297,6 @@ const HOST = '0.0.0.0';
 server.listen(PORT, HOST, () => {
   console.log('🌐 AI Studio Pro+ v10.0.0 serving at http://0.0.0.0:' + PORT);
   console.log('🎬 Production mode - All features active and unlimited!');
-  console.log('✅ No CORS restrictions - Optimized for production!');
   console.log('💎 Ready for deployment on Replit!');
   console.log('🚀 Owner: Ervin Remus Radosavlevici');
   console.log('📧 Contact: radosavlevici210@icloud.com');
