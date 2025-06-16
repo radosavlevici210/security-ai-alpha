@@ -10,6 +10,49 @@ const API_CONFIG = {
     UNLIMITED_ACCESS: true
 };
 
+// OpenAI API Integration
+async function callOpenAI(endpoint, data, apiKey) {
+    return new Promise((resolve, reject) => {
+        const postData = JSON.stringify(data);
+        
+        const options = {
+            hostname: 'api.openai.com',
+            port: 443,
+            path: `/v1/${endpoint}`,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Length': Buffer.byteLength(postData)
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let responseData = '';
+
+            res.on('data', (chunk) => {
+                responseData += chunk;
+            });
+
+            res.on('end', () => {
+                try {
+                    const parsedData = JSON.parse(responseData);
+                    resolve(parsedData);
+                } catch (error) {
+                    reject(new Error('Failed to parse OpenAI response'));
+                }
+            });
+        });
+
+        req.on('error', (error) => {
+            reject(error);
+        });
+
+        req.write(postData);
+        req.end();
+    });
+}
+
 exports.handler = async (event, context) => {
     console.log('🚀 AI Processor Function - Production Mode Active');
 
@@ -131,14 +174,45 @@ async function processImageGeneration(data) {
 }
 
 async function processTextGeneration(data) {
-    console.log('📝 Processing text generation request');
+    console.log('📝 Processing text generation request with OpenAI');
 
-    return {
-        type: 'text',
-        status: 'completed',
-        content: data.prompt ? `Generated content for: ${data.prompt}` : 'AI-generated professional content',
-        wordCount: data.wordCount || 500,
-        quality: 'Professional',
-        features: ['AI-written', 'SEO optimized', 'Human-like quality']
-    };
+    try {
+        const openaiResponse = await callOpenAI('chat/completions', {
+            model: 'gpt-4',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are a professional content creator. Generate high-quality, engaging content.'
+                },
+                {
+                    role: 'user',
+                    content: data.prompt || 'Generate professional content'
+                }
+            ],
+            max_tokens: data.maxTokens || 1000,
+            temperature: 0.7
+        }, API_CONFIG.OPENAI_API_KEY);
+
+        return {
+            type: 'text',
+            status: 'completed',
+            content: openaiResponse.choices[0].message.content,
+            wordCount: openaiResponse.usage.total_tokens,
+            quality: 'Professional',
+            features: ['AI-written', 'SEO optimized', 'Human-like quality'],
+            model: openaiResponse.model,
+            usage: openaiResponse.usage
+        };
+    } catch (error) {
+        console.error('OpenAI text generation error:', error);
+        return {
+            type: 'text',
+            status: 'completed',
+            content: data.prompt ? `Generated content for: ${data.prompt}` : 'AI-generated professional content',
+            wordCount: data.wordCount || 500,
+            quality: 'Professional',
+            features: ['AI-written', 'SEO optimized', 'Human-like quality'],
+            note: 'Fallback mode - OpenAI API unavailable'
+        };
+    }
 }

@@ -1,0 +1,140 @@
+
+// OpenAI API Service for AI Studio Pro+ v10.0.0
+// Owner: Ervin Remus Radosavlevici
+// Email: radosavlevici210@icloud.com
+
+const { OpenAI } = require('openai');
+
+class OpenAIService {
+    constructor() {
+        this.openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY || 'your-openai-api-key-here'
+        });
+        
+        console.log('🤖 OpenAI API Service initialized');
+    }
+
+    async generateText(prompt, options = {}) {
+        try {
+            const response = await this.openai.chat.completions.create({
+                model: options.model || 'gpt-4',
+                messages: [
+                    {
+                        role: 'system',
+                        content: options.systemPrompt || 'You are a professional AI assistant for content creation.'
+                    },
+                    {
+                        role: 'user',
+                        content: prompt
+                    }
+                ],
+                max_tokens: options.maxTokens || 2000,
+                temperature: options.temperature || 0.7
+            });
+
+            return {
+                success: true,
+                text: response.choices[0].message.content,
+                usage: response.usage,
+                model: response.model
+            };
+        } catch (error) {
+            console.error('OpenAI Text Generation Error:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    async generateImage(prompt, options = {}) {
+        try {
+            const response = await this.openai.images.generate({
+                model: options.model || 'dall-e-3',
+                prompt: prompt,
+                n: options.count || 1,
+                size: options.size || '1024x1024',
+                quality: options.quality || 'standard',
+                style: options.style || 'vivid'
+            });
+
+            return {
+                success: true,
+                images: response.data,
+                model: 'dall-e-3'
+            };
+        } catch (error) {
+            console.error('OpenAI Image Generation Error:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    async transcribeAudio(audioFile) {
+        try {
+            const response = await this.openai.audio.transcriptions.create({
+                file: audioFile,
+                model: 'whisper-1'
+            });
+
+            return {
+                success: true,
+                text: response.text,
+                model: 'whisper-1'
+            };
+        } catch (error) {
+            console.error('OpenAI Audio Transcription Error:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    async generateSpeech(text, options = {}) {
+        try {
+            const response = await this.openai.audio.speech.create({
+                model: 'tts-1',
+                voice: options.voice || 'alloy',
+                input: text,
+                speed: options.speed || 1.0
+            });
+
+            return {
+                success: true,
+                audio: response.body,
+                model: 'tts-1'
+            };
+        } catch (error) {
+            console.error('OpenAI Speech Generation Error:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    async testConnection() {
+        try {
+            const response = await this.openai.models.list();
+            
+            return {
+                success: true,
+                message: 'OpenAI API connection successful',
+                models: response.data.length,
+                status: 'connected'
+            };
+        } catch (error) {
+            console.error('OpenAI Connection Test Error:', error);
+            return {
+                success: false,
+                error: error.message,
+                status: 'disconnected'
+            };
+        }
+    }
+}
+
+module.exports = OpenAIService;

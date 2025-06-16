@@ -7,6 +7,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const OpenAIService = require('./openai-service');
 
 console.log('🚀 AI Studio Pro+ v10.0.0 - Production Server Starting...');
 console.log('💎 Owner: Ervin Remus Radosavlevici');
@@ -129,6 +130,12 @@ function handleAPIRequest(req, res, pathname) {
     'X-API-Version': '10.0.0',
     'X-Production-Ready': 'true'
   };
+
+  // Handle OpenAI API endpoints
+  if (pathname.startsWith('/api/openai/')) {
+    handleOpenAIRequest(req, res, pathname, headers);
+    return;
+  }
   
   if (req.method === 'POST') {
     let body = '';
@@ -191,6 +198,69 @@ function handleAPIRequest(req, res, pathname) {
 
 function generateRequestId() {
   return 'ai-' + Math.random().toString(36).substr(2, 9) + '-prod';
+}
+
+async function handleOpenAIRequest(req, res, pathname, headers) {
+  const openaiService = new OpenAIService();
+  
+  if (req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    
+    req.on('end', async () => {
+      try {
+        const requestData = JSON.parse(body || '{}');
+        let result;
+        
+        if (pathname === '/api/openai/text') {
+          result = await openaiService.generateText(requestData.prompt, requestData.options);
+        } else if (pathname === '/api/openai/image') {
+          result = await openaiService.generateImage(requestData.prompt, requestData.options);
+        } else if (pathname === '/api/openai/speech') {
+          result = await openaiService.generateSpeech(requestData.text, requestData.options);
+        } else if (pathname === '/api/openai/test') {
+          result = await openaiService.testConnection();
+        } else {
+          result = { success: false, error: 'Unknown OpenAI endpoint' };
+        }
+        
+        const response = {
+          success: result.success,
+          data: result,
+          requestId: generateRequestId(),
+          timestamp: new Date().toISOString(),
+          version: '10.0.0',
+          owner: 'Ervin Remus Radosavlevici',
+          email: 'radosavlevici210@icloud.com'
+        };
+        
+        res.writeHead(result.success ? 200 : 500, headers);
+        res.end(JSON.stringify(response, null, 2));
+      } catch (error) {
+        res.writeHead(400, headers);
+        res.end(JSON.stringify({
+          success: false,
+          error: 'Invalid request data',
+          version: '10.0.0'
+        }));
+      }
+    });
+  } else if (req.method === 'GET' && pathname === '/api/openai/test') {
+    const result = await openaiService.testConnection();
+    
+    res.writeHead(result.success ? 200 : 500, headers);
+    res.end(JSON.stringify({
+      success: result.success,
+      data: result,
+      version: '10.0.0',
+      owner: 'Ervin Remus Radosavlevici'
+    }));
+  } else {
+    res.writeHead(405, headers);
+    res.end(JSON.stringify({ error: 'Method not allowed' }));
+  }
 }
 
 const PORT = process.env.PORT || 5000;
