@@ -96,10 +96,7 @@ function serveFile(filePath, ext, res) {
     'X-Email': 'radosavlevici210@icloud.com',
     'X-Production-Ready': 'true',
     'X-Features': 'unlimited',
-    'X-Version': '10.0.0',
-    'X-Frame-Options': 'SAMEORIGIN',
-    'X-Content-Type-Options': 'nosniff',
-    'X-XSS-Protection': '1; mode=block'
+    'X-Version': '10.0.0'
   };
   
   // Cache control
