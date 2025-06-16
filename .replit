@@ -5,10 +5,10 @@ run = "node -e \"const http = require('http'); const fs = require('fs'); const p
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "npm run dev"]
+run = ["sh", "-c", "node server.js"]
 
 [workflows]
-runButton = "Real Production AI Studio v10.0.0"
+runButton = "Production Server v10.0.0"
 
 [[workflows.workflow]]
 name = "Auto-Repair System"
@@ -1305,6 +1305,35 @@ args = "});"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "\""
+
+[[workflows.workflow]]
+name = "Production Server v10.0.0"
+author = 43896790
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🚀 AI Studio Pro+ v10.0.0 - Production Server Starting...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"💎 Owner: Ervin Remus Radosavlevici\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"📧 Contact: radosavlevici210@icloud.com\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"✅ All features enabled - Production ready!\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting optimized production server on port 5000...\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server.js"
 
 [[ports]]
 localPort = 5000

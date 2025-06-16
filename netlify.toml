@@ -1,6 +1,7 @@
+
 [build]
   publish = "."
-  command = "echo 'AI Studio Pro+ v10.0.0 Real Production Build Complete'"
+  command = "echo 'AI Studio Pro+ v10.0.0 Production Build Complete'"
 
 [build.environment]
   NODE_VERSION = "18"
@@ -9,8 +10,6 @@
   PRODUCTION_MODE = "true"
   AI_STUDIO_VERSION = "10.0.0"
   FEATURES_UNLIMITED = "true"
-  SECURITY_RESTRICTIONS = "false"
-  REAL_AI_PROCESSING = "true"
 
 # Production deployment settings
 [build.processing]
@@ -27,7 +26,7 @@
 [build.processing.html]
   pretty_urls = true
 
-# Advanced redirects for production
+# Production redirects
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
@@ -53,16 +52,15 @@
   for = "/*"
   [headers.values]
     # Security headers
-    X-Frame-Options = "DENY"
+    X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' https: data:; connect-src 'self' https: wss:; media-src 'self' https: blob: data:;"
 
     # Performance headers
     X-DNS-Prefetch-Control = "on"
-    X-Powered-By = "AI Studio Pro+ v10.0.0 Real Production"
+    X-Powered-By = "AI Studio Pro+ v10.0.0 Production"
 
     # Custom headers
     X-Owner = "radosavlevici210"
@@ -72,7 +70,6 @@
     X-All-Features-Enabled = "true"
     X-Real-AI-Processing = "enabled"
     X-Unlimited-Access = "true"
-    X-Security-Restrictions = "disabled"
 
 # Optimize static assets
 [[headers]]
@@ -115,9 +112,6 @@
 [[headers]]
   for = "/api/*"
   [headers.values]
-    Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
-    Access-Control-Allow-Headers = "Content-Type, Authorization, X-Requested-With"
     Cache-Control = "no-cache, no-store, must-revalidate"
 
 # Media files optimization
@@ -125,16 +119,11 @@
   for = "/media/*"
   [headers.values]
     Cache-Control = "public, max-age=86400"
-    Access-Control-Allow-Origin = "*"
 
 # Edge functions for production
 [[edge_functions]]
   function = "self-repair"
   path = "/*"
-
-[[edge_functions]]
-  function = "performance-monitor"
-  path = "/api/*"
 
 # Production functions
 [functions]
@@ -143,7 +132,7 @@
 
 # Development server settings
 [dev]
-  command = "python3 -m http.server 5000"
+  command = "node server.js"
   port = 5000
   targetPort = 5000
   framework = "#auto"
@@ -151,17 +140,13 @@
 
 # Production deployment configuration
 [deployment]
-  run = ["sh", "-c", "echo 'AI Studio Pro+ v10.0.0 Real Production Deployment Ready'"]
+  run = ["node", "server.js"]
 
 # Advanced performance settings
 [context.production]
-  command = "echo 'Real production build optimized for maximum performance'"
+  command = "echo 'Production build optimized for maximum performance'"
 
 [context.production.environment]
-  HUGO_VERSION = "0.58.2"
-  HUGO_ENV = "production"
-  HUGO_ENABLEGITINFO = "true"
   NODE_ENV = "production"
   AI_FEATURES_ENABLED = "all"
   PROCESSING_MODE = "unlimited"
-  REAL_AI_ENABLED = "true"

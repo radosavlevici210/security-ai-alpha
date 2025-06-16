@@ -1,5 +1,5 @@
 
-// AI Studio Pro+ v9.0.0 - Production Server
+// AI Studio Pro+ v10.0.0 - Production Server
 // Owner: Ervin Remus Radosavlevici
 // Email: radosavlevici210@icloud.com
 
@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-console.log('🚀 AI Studio Pro+ v9.0.0 - Production Server Starting...');
+console.log('🚀 AI Studio Pro+ v10.0.0 - Production Server Starting...');
 console.log('💎 Owner: Ervin Remus Radosavlevici');
 console.log('📧 Contact: radosavlevici210@icloud.com');
 
@@ -37,17 +37,6 @@ const mimeTypes = {
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname;
-  
-  // Handle CORS preflight
-  if (req.method === 'OPTIONS') {
-    res.writeHead(200, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With'
-    });
-    res.end();
-    return;
-  }
   
   // Handle root request
   if (pathname === '/') {
@@ -98,18 +87,18 @@ const server = http.createServer((req, res) => {
 function serveFile(filePath, ext, res) {
   const mimeType = mimeTypes[ext] || 'application/octet-stream';
   
-  // Production headers
+  // Production headers without CORS
   const headers = {
     'Content-Type': mimeType,
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
-    'X-Powered-By': 'AI Studio Pro+ v9.0.0',
+    'X-Powered-By': 'AI Studio Pro+ v10.0.0',
     'X-Owner': 'Ervin Remus Radosavlevici',
     'X-Email': 'radosavlevici210@icloud.com',
     'X-Production-Ready': 'true',
     'X-Features': 'unlimited',
-    'X-Version': '9.0.0'
+    'X-Version': '10.0.0',
+    'X-Frame-Options': 'SAMEORIGIN',
+    'X-Content-Type-Options': 'nosniff',
+    'X-XSS-Protection': '1; mode=block'
   };
   
   // Cache control
@@ -134,13 +123,10 @@ function serveFile(filePath, ext, res) {
 function handleAPIRequest(req, res, pathname) {
   console.log(`🔧 API Request: ${req.method} ${pathname}`);
   
-  // Set API response headers
+  // Set API response headers without CORS
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
-    'X-API-Version': '9.0.0',
+    'X-API-Version': '10.0.0',
     'X-Production-Ready': 'true'
   };
   
@@ -155,11 +141,11 @@ function handleAPIRequest(req, res, pathname) {
         const requestData = JSON.parse(body || '{}');
         const response = {
           success: true,
-          message: 'AI Studio Pro+ v9.0.0 - Production API Response',
+          message: 'AI Studio Pro+ v10.0.0 - Production API Response',
           data: {
             requestId: generateRequestId(),
             timestamp: new Date().toISOString(),
-            version: '9.0.0',
+            version: '10.0.0',
             owner: 'Ervin Remus Radosavlevici',
             email: 'radosavlevici210@icloud.com',
             features: 'unlimited',
@@ -176,15 +162,15 @@ function handleAPIRequest(req, res, pathname) {
         res.end(JSON.stringify({
           success: false,
           error: 'Invalid JSON',
-          version: '9.0.0'
+          version: '10.0.0'
         }));
       }
     });
   } else {
     const response = {
       success: true,
-      message: 'AI Studio Pro+ v9.0.0 API - Production Ready',
-      version: '9.0.0',
+      message: 'AI Studio Pro+ v10.0.0 API - Production Ready',
+      version: '10.0.0',
       owner: 'Ervin Remus Radosavlevici',
       email: 'radosavlevici210@icloud.com',
       features: {
@@ -211,10 +197,10 @@ const PORT = process.env.PORT || 5000;
 const HOST = '0.0.0.0';
 
 server.listen(PORT, HOST, () => {
-  console.log('🌐 AI Studio Pro+ v9.0.0 serving at http://0.0.0.0:' + PORT);
+  console.log('🌐 AI Studio Pro+ v10.0.0 serving at http://0.0.0.0:' + PORT);
   console.log('🎬 Production mode - All features active and unlimited!');
-  console.log('✅ No restrictions - Professional grade AI processing!');
-  console.log('💎 Ready for deployment on Replit and Netlify!');
+  console.log('✅ No CORS restrictions - Optimized for production!');
+  console.log('💎 Ready for deployment on Replit!');
   console.log('🚀 Owner: Ervin Remus Radosavlevici');
   console.log('📧 Contact: radosavlevici210@icloud.com');
 });
