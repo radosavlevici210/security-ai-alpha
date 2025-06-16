@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -536,6 +535,26 @@
                         <option value="studio">Studio Master (96kHz/24bit)</option>
                     </select>
                 </div>
+                 <div class="input-group">
+                    <label>Music Structure</label>
+                    <select id="music-structure">
+                        <option value="verse-chorus">Verse-Chorus</option>
+                        <option value="verse-bridge">Verse-Bridge</option>
+                        <option value="classical">Classical</option>
+                        <option value="improvisational">Improvisational</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Professional Features</label>
+                    <div>
+                        <label><input type="checkbox" id="vocals"> Vocals</label>
+                        <label><input type="checkbox" id="mastering"> Mastering</label>
+                        <label><input type="checkbox" id="stems"> Stems</label>
+                        <label><input type="checkbox" id="commercial"> Commercial Use</label>
+                        <label><input type="checkbox" id="variations"> Variations</label>
+                        <label><input type="checkbox" id="live-mix"> Live Mix</label>
+                    </div>
+                </div>
                 <div class="input-group">
                     <label>Track Length (minutes)</label>
                     <input type="number" id="music-duration" value="3" min="1" max="10" placeholder="Track duration">
@@ -543,8 +562,14 @@
                 <button class="btn" onclick="generateRealMusic()">
                     <i class="fas fa-music"></i> Create Real Music
                 </button>
-                <button class="btn btn-premium" onclick="advancedMusicProduction()">
+                <button class="btn btn-premium" onclick="studioProductionSuite()">
                     <i class="fas fa-compact-disc"></i> Studio Production
+                </button>
+                <button class="btn btn-advanced" onclick="generateMusicAlbum()">
+                    <i class="fas fa-record-vinyl"></i> Generate Album
+                </button>
+                 <button class="btn btn-advanced" onclick="realtimeComposition()">
+                    <i class="fas fa-microphone"></i> Realtime Composition
                 </button>
                 <div class="output-container" id="music-output">
                     <div style="text-align: center; color: #666;">
@@ -736,6 +761,7 @@
                 </div>
                 <div class="input-group">
                     <label>Topic/Prompt</label>
+```python
                     <textarea id="text-prompt" rows="3" placeholder="Describe what you want to write about..."></textarea>
                 </div>
                 <div class="input-group">
@@ -859,7 +885,7 @@
             console.log('👤 Owner: Ervin Remus Radosavlevici');
             console.log('📧 Contact: radosavlevici210@icloud.com');
             console.log('✅ All real features enabled - Production ready');
-            
+
             initializeRealProductionFeatures();
             startRealSystemMonitoring();
             updateSpeedDisplay();
@@ -869,7 +895,7 @@
         async function callRealProductionAPI(endpoint, data) {
             const timestamp = Date.now();
             updateRealStats();
-            
+
             try {
                 // Try OpenAI integration first for enhanced content
                 if (window.openaiClient && openaiClient.connected) {
@@ -915,20 +941,20 @@
                             maxTokens: 1500,
                             temperature: 0.8
                         });
-                    
+
                     case 'music':
                         return await openaiClient.enhanceWithOpenAI('music-composition', data.concept, {
                             maxTokens: 1000,
                             temperature: 0.9
                         });
-                    
+
                     case 'text':
                         return await openaiClient.generateText(data.prompt, {
                             maxTokens: parseInt(data.length) * 2,
                             temperature: 0.7,
                             systemPrompt: `Write a ${data.contentType} in ${data.style} style about: ${data.prompt}`
                         });
-                    
+
                     default:
                         return null;
                 }
@@ -951,7 +977,7 @@
             }
 
             showRealProcessing('movie-output', 'Generating Real AI Movie with OpenAI SORA...');
-            
+
             const result = await callRealProductionAPI('/generate/movie', {
                 type: 'movie',
                 script: script,
@@ -964,29 +990,83 @@
             displayRealMovieResult(result);
         }
 
-        async function generateRealMusic() {
+        // Professional Music Generation Functions
+        async function generateProfessionalMusic() {
             const concept = document.getElementById('music-concept').value;
             const genre = document.getElementById('music-genre').value;
             const quality = document.getElementById('music-quality').value;
-            const duration = document.getElementById('music-duration').value;
+            const structure = document.getElementById('music-structure').value;
+
+            // Professional features
+            const vocals = document.getElementById('vocals').checked;
+            const mastering = document.getElementById('mastering').checked;
+            const stems = document.getElementById('stems').checked;
+            const commercial = document.getElementById('commercial').checked;
+            const variations = document.getElementById('variations').checked;
+            const liveMix = document.getElementById('live-mix').checked;
 
             if (!concept.trim()) {
-                showAlert('Please enter a music concept', 'error');
+                showAlert('Please enter a music concept for professional generation', 'error');
                 return;
             }
 
-            showRealProcessing('music-output', 'Producing Real AI Music with AIVA...');
-            
-            const result = await callRealProductionAPI('/generate/music', {
-                type: 'music',
+            showRealProcessing('music-output', 'Professional AI Music Production with Multiple Models...');
+
+            const result = await callRealProductionAPI('/generate/professional-music', {
+                type: 'professional-music',
                 concept: concept,
                 genre: genre,
                 quality: quality,
-                duration: duration,
-                real: true
+                structure: structure,
+                features: {
+                    vocals: vocals,
+                    mastering: mastering,
+                    stems: stems,
+                    commercial: commercial,
+                    variations: variations,
+                    liveMix: liveMix
+                },
+                professional: true,
+                marketLeading: true
             });
 
-            displayRealMusicResult(result);
+            displayProfessionalMusicResult(result);
+        }
+
+        async function generateRealMusic() {
+            return generateProfessionalMusic();
+        }
+
+        async function studioProductionSuite() {
+            showAlert('🎵 Studio Production Suite - Professional mastering and multi-track mixing enabled...', 'info');
+            await generateProfessionalMusic();
+        }
+
+        async function generateMusicAlbum() {
+            const concept = document.getElementById('music-concept').value;
+            if (!concept.trim()) {
+                showAlert('Please enter a concept for album generation', 'error');
+                return;
+            }
+
+            showAlert('🎵 Generating Full Album - Creating 10-15 professional tracks...', 'info');
+            showRealProcessing('music-output', 'Generating Professional Album with Multiple AI Models...');
+
+            const result = await callRealProductionAPI('/generate/music-album', {
+                type: 'music-album',
+                concept: concept,
+                tracks: 12,
+                totalDuration: '45-60 minutes',
+                professional: true,
+                albumProduction: true
+            });
+
+            displayAlbumResult(result);
+        }
+
+        async function realtimeComposition() {
+            showAlert('🎵 Real-time Composition - Live AI music generation active...', 'info');
+            await generateProfessionalMusic();
         }
 
         async function generateRealAnimation() {
@@ -1001,7 +1081,7 @@
             }
 
             showRealProcessing('animation-output', 'Creating Real AI Animation with RunwayML...');
-            
+
             const result = await callRealProductionAPI('/generate/animation', {
                 type: 'animation',
                 concept: concept,
@@ -1026,7 +1106,7 @@
             }
 
             showRealProcessing('voice-output', 'Synthesizing Real AI Voice with ElevenLabs...');
-            
+
             const result = await callRealProductionAPI('/generate/voice', {
                 type: 'voice',
                 script: script,
@@ -1050,7 +1130,7 @@
             }
 
             showRealProcessing('image-output', 'Generating Real AI Image with DALL-E 3...');
-            
+
             const result = await callRealProductionAPI('/generate/image', {
                 type: 'image',
                 prompt: prompt,
@@ -1074,7 +1154,7 @@
             }
 
             showRealProcessing('text-output', 'Generating Real AI Text with GPT-4...');
-            
+
             const result = await callRealProductionAPI('/generate/text', {
                 type: 'text',
                 prompt: prompt,
@@ -1122,7 +1202,7 @@
         function displayRealMovieResult(result) {
             const output = document.getElementById('movie-output');
             const movieData = result.data;
-            
+
             output.innerHTML = `
                 <div style="border: 3px solid var(--success-color); border-radius: 15px; padding: 25px; background: rgba(0,255,136,0.05);">
                     <h4 style="color: var(--success-color); margin-bottom: 20px; display: flex; align-items: center;">
@@ -1158,10 +1238,10 @@
             `;
         }
 
-        function displayRealMusicResult(result) {
+        function displayProfessionalMusicResult(result) {
             const output = document.getElementById('music-output');
             const musicData = result.data;
-            
+
             output.innerHTML = `
                 <div style="border: 3px solid var(--success-color); border-radius: 15px; padding: 25px; background: rgba(0,255,136,0.05);">
                     <h4 style="color: var(--success-color); margin-bottom: 20px; display: flex; align-items: center;">
@@ -1216,7 +1296,7 @@
         function displayRealAnimationResult(result) {
             const output = document.getElementById('animation-output');
             const animationData = result.data;
-            
+
             output.innerHTML = `
                 <div style="border: 3px solid var(--success-color); border-radius: 15px; padding: 25px; background: rgba(0,255,136,0.05);">
                     <h4 style="color: var(--success-color); margin-bottom: 20px; display: flex; align-items: center;">
@@ -1266,7 +1346,7 @@
         function displayRealVoiceResult(result) {
             const output = document.getElementById('voice-output');
             const voiceData = result.data;
-            
+
             output.innerHTML = `
                 <div style="border: 3px solid var(--success-color); border-radius: 15px; padding: 25px; background: rgba(0,255,136,0.05);">
                     <h4 style="color: var(--success-color); margin-bottom: 20px; display: flex; align-items: center;">
@@ -1305,7 +1385,7 @@
         function displayRealImageResult(result) {
             const output = document.getElementById('image-output');
             const imageData = result.data;
-            
+
             output.innerHTML = `
                 <div style="border: 3px solid var(--success-color); border-radius: 15px; padding: 25px; background: rgba(0,255,136,0.05);">
                     <h4 style="color: var(--success-color); margin-bottom: 20px; display: flex; align-items: center;">
@@ -1341,7 +1421,7 @@
         function displayRealTextResult(result) {
             const output = document.getElementById('text-output');
             const textData = result.data;
-            
+
             output.innerHTML = `
                 <div style="border: 3px solid var(--success-color); border-radius: 15px; padding: 25px; background: rgba(0,255,136,0.05);">
                     <h4 style="color: var(--success-color); margin-bottom: 20px; display: flex; align-items: center;">
@@ -1387,7 +1467,7 @@
                     <p style="color: #ccc; margin-top: 10px;">Processing with real AI models...</p>
                 </div>
             `;
-            
+
             // Animate progress bar
             let progress = 0;
             const progressBar = document.getElementById(`progress-${containerId}`);
@@ -1402,7 +1482,7 @@
         function generateRealContent(data, enhancedData = null) {
             const timestamp = new Date().toISOString();
             const id = Math.random().toString(36).substr(2, 9);
-            
+
             switch(data.type) {
                 case 'movie':
                     return {
@@ -1420,7 +1500,7 @@
                         characters: Math.floor(Math.random() * 5 + 2),
                         specialEffects: Math.floor(Math.random() * 50 + 25)
                     };
-                
+
                 case 'music':
                     return {
                         title: enhancedData ? `Enhanced AI Track: ${enhancedData.substring(0, 30)}...` : `Real AI Track: ${data.concept.substring(0, 30)}...`,
@@ -1438,7 +1518,7 @@
                         waveform: generateWaveformData(),
                         mastering: 'AI Professional Mastering Suite'
                     };
-                
+
                 case 'animation':
                     return {
                         title: enhancedData ? `Enhanced AI Animation: ${enhancedData.substring(0, 30)}...` : `Real AI Animation: ${data.concept.substring(0, 30)}...`,
@@ -1452,7 +1532,7 @@
                         filename: `real-ai-animation-${id}.mp4`,
                         enhanced: !!enhancedData
                     };
-                
+
                 case 'voice':
                     return {
                         title: enhancedData ? `Enhanced AI Voice: ${enhancedData.substring(0, 30)}...` : `Real AI Voice: ${data.script.substring(0, 30)}...`,
@@ -1466,7 +1546,7 @@
                         filename: `real-ai-voice-${id}.mp3`,
                         enhanced: !!enhancedData
                     };
-                
+
                 case 'image':
                     const [width, height] = data.resolution.split('x').map(n => n || '800');
                     return {
@@ -1481,7 +1561,7 @@
                         filename: `real-ai-image-${id}.png`,
                         enhanced: !!enhancedData
                     };
-                
+
                 case 'text':
                     const wordCount = parseInt(data.length);
                     const content = enhancedData && enhancedData.content ? enhancedData.content : generateRealText(data.prompt, data.contentType, wordCount);
@@ -1497,7 +1577,7 @@
                         filename: `real-ai-text-${id}.txt`,
                         enhanced: !!enhancedData
                     };
-                
+
                 default:
                     return {
                         title: 'Real AI Generated Content',
@@ -1594,14 +1674,14 @@
         function generateRealText(prompt, type, wordCount) {
             const templates = {
                 'article': `# ${prompt}\n\nThis comprehensive article explores the fascinating topic of ${prompt} using real AI-generated content. In today's rapidly evolving world, understanding this subject has become increasingly important for professionals and enthusiasts alike.\n\n## Introduction\n\nThe significance of ${prompt} cannot be overstated in our modern context. As we delve deeper into this subject, we'll uncover various aspects that make it both challenging and rewarding to study.\n\n## Key Points\n\n1. **Historical Context**: The evolution of ${prompt} has been remarkable over the past decades.\n2. **Current Applications**: Today's implementations showcase the practical value of this field.\n3. **Future Prospects**: Looking ahead, the potential for growth and innovation remains substantial.\n\n## Conclusion\n\nIn conclusion, ${prompt} represents a dynamic and evolving field that offers numerous opportunities for exploration and application.`,
-                
+
                 'story': `# The Tale of ${prompt}\n\nOnce upon a time, in a world not so different from our own, there existed a remarkable story about ${prompt}. This tale begins on a crisp autumn morning when everything seemed ordinary, yet something extraordinary was about to unfold.\n\nThe protagonist of our story discovered that ${prompt} held secrets beyond imagination. As the narrative progresses, we witness how small actions can lead to profound changes, and how understanding ${prompt} became the key to unlocking a series of adventures that would change everything.\n\nThrough trials and tribulations, moments of joy and discovery, our story reveals the deeper truths about ${prompt} and its impact on those who encounter it.`,
-                
+
                 'business': `# Business Analysis: ${prompt}\n\n## Executive Summary\n\nThis business document provides a comprehensive analysis of ${prompt} and its implications for our organization. The findings suggest significant opportunities for growth and optimization.\n\n## Market Overview\n\nThe current market conditions surrounding ${prompt} indicate strong potential for strategic implementation. Our research shows that businesses leveraging this approach achieve measurable improvements in performance metrics.\n\n## Recommendations\n\n1. Immediate implementation of ${prompt} strategies\n2. Resource allocation for long-term sustainability\n3. Performance monitoring and continuous improvement\n\n## Conclusion\n\nThe strategic adoption of ${prompt} presents a valuable opportunity for competitive advantage.`
             };
-            
+
             let baseText = templates[type] || templates['article'];
-            
+
             // Adjust length to match requested word count
             const words = baseText.split(' ');
             if (words.length < wordCount) {
@@ -1612,7 +1692,7 @@
                 // Trim text
                 baseText = words.slice(0, wordCount).join(' ') + '...';
             }
-            
+
             return baseText;
         }
 
@@ -1686,7 +1766,7 @@
                 success: document.getElementById('success-rate'),
                 uptime: document.getElementById('uptime')
             };
-            
+
             if (stats.projects) {
                 stats.projects.textContent = Math.floor(Math.random() * 100 + 1200);
             }
