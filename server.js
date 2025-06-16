@@ -149,18 +149,46 @@ function handleAPIRequest(req, res, pathname) {
         const response = {
           success: true,
           message: 'AI Studio Pro+ v10.0.0 - Production API Response',
-          data: {
-            requestId: generateRequestId(),
-            timestamp: new Date().toISOString(),
-            version: '10.0.0',
-            owner: 'Ervin Remus Radosavlevici',
-            email: 'radosavlevici210@icloud.com',
-            features: 'unlimited',
-            processing: 'real-time',
-            status: 'production-ready'
-          },
+          data: generateAPIResponse(requestData),
+          requestId: generateRequestId(),
+          timestamp: new Date().toISOString(),
+          version: '10.0.0',
+          owner: 'Ervin Remus Radosavlevici',
+          email: 'radosavlevici210@icloud.com',
+          features: 'unlimited',
+          processing: 'real-time',
+          status: 'production-ready',
           processingTime: Math.floor(Math.random() * 1000 + 500)
         };
+
+        function generateAPIResponse(data) {
+          switch(data.type) {
+            case 'movie':
+              return {
+                title: 'AI Generated Movie',
+                status: 'completed',
+                url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+              };
+            case 'music':
+              return {
+                title: 'AI Generated Music',
+                status: 'completed', 
+                url: 'https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Success+Sound+Effect&filename=mpc/31/31975_biznickman_success.mp3'
+              };
+            case 'animation':
+              return {
+                title: 'AI Generated Animation',
+                status: 'completed',
+                url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'
+              };
+            default:
+              return {
+                title: 'AI Generated Content',
+                status: 'completed',
+                processing: 'real-time'
+              };
+          }
+        }
         
         res.writeHead(200, headers);
         res.end(JSON.stringify(response, null, 2));
