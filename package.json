@@ -27,8 +27,8 @@
     "real-features"
   ],
   "scripts": {
-    "start": "python3 -m http.server 5000",
-    "dev": "python3 -m http.server 5000",
+    "start": "node server.js",
+    "dev": "node server.js",
     "build": "echo 'AI Studio Pro+ v9.0.0 Production Build Complete' && mkdir -p dist && cp -r * dist/ 2>/dev/null || true",
     "deploy": "echo 'Deploying AI Studio Pro+ v9.0.0 to production'",
     "production": "echo 'AI Studio Pro+ v9.0.0 Production Server Starting' && python3 -m http.server 5000",
