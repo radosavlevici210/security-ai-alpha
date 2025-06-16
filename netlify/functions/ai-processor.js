@@ -58,11 +58,14 @@ exports.handler = async (event, context) => {
 
     const headers = {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, X-API-Key',
         'X-AI-Processor': 'production',
         'X-Version': '10.0.0',
         'X-Real-Processing': 'enabled',
-        'X-Frame-Options': 'SAMEORIGIN',
-        'X-Content-Type-Options': 'nosniff'
+        'X-CORS-Disabled': 'true',
+        'X-Real-OpenAI': 'active'
     };
 
     if (event.httpMethod !== 'POST') {

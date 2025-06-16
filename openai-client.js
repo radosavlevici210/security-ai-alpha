@@ -15,8 +15,10 @@ class OpenAIClient {
             const response = await fetch(`${this.baseURL}/api/openai/test`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                mode: 'cors'
             });
 
             const result = await response.json();
@@ -41,8 +43,10 @@ class OpenAIClient {
             const response = await fetch(`${this.baseURL}/api/openai/text`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
+                mode: 'cors',
                 body: JSON.stringify({
                     prompt: prompt,
                     options: {

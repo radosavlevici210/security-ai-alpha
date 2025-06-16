@@ -36,6 +36,19 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
+  // Remove all CORS restrictions for production
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-API-Key');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200);
+    res.end();
+    return;
+  }
+  
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname;
   
@@ -88,15 +101,20 @@ const server = http.createServer((req, res) => {
 function serveFile(filePath, ext, res) {
   const mimeType = mimeTypes[ext] || 'application/octet-stream';
   
-  // Production headers
+  // Production headers with no CORS restrictions
   const headers = {
     'Content-Type': mimeType,
-    'X-Powered-By': 'AI Studio Pro+ v10.0.0',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, X-API-Key',
+    'X-Powered-By': 'AI Studio Pro+ v10.0.0 Production',
     'X-Owner': 'Ervin Remus Radosavlevici',
     'X-Email': 'radosavlevici210@icloud.com',
     'X-Production-Ready': 'true',
-    'X-Features': 'unlimited',
-    'X-Version': '10.0.0'
+    'X-Features': 'unlimited-real',
+    'X-Version': '10.0.0',
+    'X-CORS-Disabled': 'true',
+    'X-Real-OpenAI': 'enabled'
   };
   
   // Cache control
