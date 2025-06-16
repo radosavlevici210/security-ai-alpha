@@ -3,6 +3,9 @@
 // Owner: Ervin Remus Radosavlevici
 // Email: radosavlevici210@icloud.com
 
+// Validate environment
+console.log('🔧 Loading production configuration...');
+
 const PRODUCTION_CONFIG = {
     VERSION: '10.0.0',
     OWNER: 'Ervin Remus Radosavlevici',

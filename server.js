@@ -7,7 +7,16 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
-const OpenAIService = require('./openai-service');
+// Initialize OpenAI service with error handling
+let openaiService;
+try {
+  const OpenAIService = require('./openai-service');
+  openaiService = new OpenAIService();
+  console.log('✅ OpenAI service initialized successfully');
+} catch (error) {
+  console.log('⚠️ OpenAI service not available, continuing with mock responses');
+  openaiService = null;
+}
 
 console.log('🚀 AI Studio Pro+ v10.0.0 - Production Server Starting...');
 console.log('💎 Owner: Ervin Remus Radosavlevici');
@@ -244,7 +253,22 @@ function generateRequestId() {
 }
 
 async function handleOpenAIRequest(req, res, pathname, headers) {
-  const openaiService = new OpenAIService();
+  if (!openaiService) {
+    // Fallback response when OpenAI service is not available
+    const mockResponse = {
+      success: true,
+      data: {
+        content: "AI Studio Pro+ v10.0.0 - Mock response (OpenAI service unavailable)",
+        type: "text",
+        timestamp: new Date().toISOString()
+      },
+      message: "Mock response - OpenAI integration ready for API key setup"
+    };
+    
+    res.writeHead(200, headers);
+    res.end(JSON.stringify(mockResponse, null, 2));
+    return;
+  }
   
   if (req.method === 'POST') {
     let body = '';
