@@ -1,12 +1,16 @@
+
 [build]
   publish = "."
-  command = "echo 'Production build ready'"
+  command = "echo 'AI Studio Pro+ v9.0.0 Production Build Complete'"
 
 [build.environment]
   NODE_VERSION = "18"
   AUTO_OPTIMIZE = "true"
   ENABLE_ADVANCED_FEATURES = "true"
   PRODUCTION_MODE = "true"
+  AI_STUDIO_VERSION = "9.0.0"
+  FEATURES_UNLIMITED = "true"
+  SECURITY_RESTRICTIONS = "false"
 
 # Production deployment settings
 [build.processing]
@@ -30,6 +34,16 @@
   status = 200
 
 [[redirects]]
+  from = "/generate/*"
+  to = "/.netlify/functions/ai-processor"
+  status = 200
+
+[[redirects]]
+  from = "/download/*"
+  to = "/.netlify/functions/media-handler"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
@@ -44,17 +58,21 @@
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' https: data:; connect-src 'self' https: wss:; media-src 'self' https: blob: data:;"
 
     # Performance headers
     X-DNS-Prefetch-Control = "on"
-    X-Powered-By = "AI Studio Pro+ Production v8.1.0"
+    X-Powered-By = "AI Studio Pro+ v9.0.0 Production"
 
     # Custom headers
     X-Owner = "radosavlevici210"
     X-Email = "radosavlevici210@icloud.com"
-    X-Version = "8.1.0-production"
+    X-Version = "9.0.0"
     X-Production-Ready = "true"
     X-All-Features-Enabled = "true"
+    X-Real-AI-Processing = "enabled"
+    X-Unlimited-Access = "true"
+    X-Security-Restrictions = "disabled"
 
 # Optimize static assets
 [[headers]]
@@ -75,29 +93,74 @@
     Cache-Control = "public, max-age=0, must-revalidate"
     Content-Type = "text/html; charset=utf-8"
 
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/png"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/jpeg"
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "image/svg+xml"
+
 # API optimization
 [[headers]]
   for = "/api/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
-    Access-Control-Allow-Headers = "Content-Type, Authorization"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, X-Requested-With"
     Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Media files optimization
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+    Access-Control-Allow-Origin = "*"
 
 # Edge functions for production
 [[edge_functions]]
   function = "self-repair"
   path = "/*"
 
+[[edge_functions]]
+  function = "performance-monitor"
+  path = "/api/*"
+
 # Production functions
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Dev server for testing
+# Development server settings
 [dev]
   command = "python3 -m http.server 5000"
   port = 5000
   targetPort = 5000
   framework = "#auto"
   autoLaunch = false
+
+# Production deployment configuration
+[deployment]
+  run = ["sh", "-c", "echo 'AI Studio Pro+ v9.0.0 Production Deployment Ready'"]
+
+# Advanced performance settings
+[context.production]
+  command = "echo 'Production build optimized for maximum performance'"
+
+[context.production.environment]
+  HUGO_VERSION = "0.58.2"
+  HUGO_ENV = "production"
+  HUGO_ENABLEGITINFO = "true"
+  NODE_ENV = "production"
+  AI_FEATURES_ENABLED = "all"
+  PROCESSING_MODE = "unlimited"
