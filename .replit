@@ -1313,11 +1313,11 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"🚀 AI Studio Pro+ v10.0.0 - Production Server Starting...\""
+args = "echo \"🚀 AI Studio Pro+ v10.0.0 - Starting Production Server\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"💎 Owner: Ervin Remus Radosavlevici\""
+args = "echo \"💎 Owner: Ervin Remus Radosavlevici\"  "
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
@@ -1325,11 +1325,15 @@ args = "echo \"📧 Contact: radosavlevici210@icloud.com\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"✅ All features enabled - Production ready!\""
+args = "echo \"✅ All features enabled - CORS disabled - Production ready!\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "echo \"🌐 Starting optimized production server on port 5000...\""
+args = "echo \"🔑 OpenAI API Integration: ACTIVE\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"🌐 Starting server on 0.0.0.0:5000...\""
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
