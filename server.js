@@ -195,6 +195,12 @@ function handleAPIRequest(req, res, pathname) {
     return;
   }
   
+  // Handle real video and music generation
+  if (pathname.startsWith('/api/generate/')) {
+    handleGenerateRequest(req, res, pathname, headers);
+    return;
+  }
+  
   if (req.method === 'POST') {
     let body = '';
     req.on('data', chunk => {
@@ -305,6 +311,63 @@ function generateEnhancedAPIResponse(data) {
 
 function generateUniqueRequestId() {
   return 'ai-ultimate-' + Math.random().toString(36).substr(2, 12) + '-prod-' + Date.now();
+}
+
+async function handleGenerateRequest(req, res, pathname, headers) {
+  console.log(`🎬 Real Generation Request: ${req.method} ${pathname}`);
+  
+  if (req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    
+    req.on('end', async () => {
+      try {
+        const requestData = JSON.parse(body || '{}');
+        let result;
+        
+        if (pathname === '/api/generate/video') {
+          result = await openaiService.generateVideo(requestData.prompt, requestData.options);
+        } else if (pathname === '/api/generate/music') {
+          result = await openaiService.generateMusic(requestData.prompt, requestData.options);
+        } else if (pathname === '/api/generate/speech') {
+          result = await openaiService.generateSpeech(requestData.text, requestData.options);
+        } else {
+          result = { success: false, error: 'Unknown generation endpoint' };
+        }
+        
+        const response = {
+          success: result.success,
+          data: result,
+          requestId: generateUniqueRequestId(),
+          timestamp: new Date().toISOString(),
+          version: '11.0.0',
+          owner: 'Ervin Remus Radosavlevici',
+          email: 'radosavlevici210@icloud.com',
+          production_ready: true,
+          enhanced: true
+        };
+        
+        res.writeHead(result.success ? 200 : 500, headers);
+        res.end(JSON.stringify(response, null, 2));
+      } catch (error) {
+        res.writeHead(400, headers);
+        res.end(JSON.stringify({
+          success: false,
+          error: 'Invalid request data',
+          version: '11.0.0',
+          timestamp: new Date().toISOString()
+        }));
+      }
+    });
+  } else {
+    res.writeHead(405, headers);
+    res.end(JSON.stringify({ 
+      error: 'Method not allowed',
+      version: '11.0.0'
+    }));
+  }
 }
 
 async function handleOpenAIRequest(req, res, pathname, headers) {

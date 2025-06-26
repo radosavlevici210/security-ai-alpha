@@ -136,6 +136,56 @@ class OpenAIClient {
         });
     }
 
+    async generateVideo(prompt, options = {}) {
+        try {
+            const response = await fetch(`${this.baseURL}/api/generate/video`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prompt: prompt,
+                    options: {
+                        duration: options.duration || '30 seconds',
+                        quality: options.quality || '4K',
+                        style: options.style || 'cinematic'
+                    }
+                })
+            });
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('OpenAI video generation failed:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async generateMusic(prompt, options = {}) {
+        try {
+            const response = await fetch(`${this.baseURL}/api/generate/music`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prompt: prompt,
+                    options: {
+                        duration: options.duration || '3 minutes',
+                        genre: options.genre || 'original',
+                        tempo: options.tempo || 120
+                    }
+                })
+            });
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('OpenAI music generation failed:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
     // Utility method to enhance existing AI functions with OpenAI
     async enhanceWithOpenAI(type, content, options = {}) {
         switch (type) {
@@ -149,13 +199,10 @@ class OpenAIClient {
                 );
             
             case 'music-composition':
-                return await this.generateText(
-                    `Create a detailed music composition based on: ${content}`,
-                    {
-                        systemPrompt: 'You are a professional music composer. Provide detailed composition instructions.',
-                        maxTokens: 1500
-                    }
-                );
+                return await this.generateMusic(content, options);
+            
+            case 'video-generation':
+                return await this.generateVideo(content, options);
             
             case 'voice-script':
                 return await this.generateText(
